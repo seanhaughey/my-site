@@ -1,0 +1,117 @@
+
+/*
+  Drawer v0.5.3
+  ==============
+  Copyright (c) Dom Christie 2013 */
+
+@charset "UTF-8";
+
+/*
+  Prevents content from being scrolled over the drawer.
+  Altering this property dynamically (including through media queries) prevents
+  transitions from starting (and transitionend from firing)
+  (see https://bugzilla.mozilla.org/show_bug.cgi?id=625289) */
+html, body {
+  overflow-x: hidden;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+/*
+  drawer
+  ------- */
+
+.drawer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 250px;
+}
+
+/* 
+  drawer-butt
+  ------------
+  Wraps any content that “butts up” to the drawer
+  (for want of a better class name!) */
+
+.drawer-butt {
+  display: block;
+
+  /* Ensures `.drawer-butt` overlaps `.drawer` */
+  position: relative;
+  z-index: 2;
+
+  /* **Important**: Create new block formatting context to prevent
+    overflow/sizing issues */
+  overflow: hidden;
+  
+  width: auto;
+  margin-left: 250px;
+
+  /* Override this with anything (ideally not transparent/none!) */
+  background: #fff;
+}
+
+.drawer-open .drawer-butt {
+  margin-left: 250px;
+  -webkit-transform: translate(0, 0);
+  -moz-transform:    translate(0, 0);
+  -ms-transform:     translate(0, 0);
+  -o-transform:      translate(0, 0);
+  transform:         translate(0, 0);
+}
+
+/* 
+  Transitions
+  ------------ */
+.drawer {
+  -webkit-transition: opacity .3s;
+  -moz-transition:    opacity .3s;
+  -o-transition:      opacity .3s;
+  transition:         opacity .3s;
+}
+.drawer-butt {
+  -webkit-transition: margin-left .2s, -webkit-transform .2s;
+  -moz-transition:    margin-left .2s,    -moz-transform .2s;
+  -o-transition:      margin-left .2s,      -o-transform .2s;
+  transition:         margin-left .2s,         transform .2s;
+
+  /* Prevent transition flickering
+    Do not apply this to .drawer. It will break scrolling on Android 2 */
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+/*
+  Media Queries
+  -------------- */
+
+@media only screen and (max-width: 870px) {
+
+  /* Make .drawer transparent to ensure its “hidden”, even when .drawer-butt
+    content is shorter  */
+  .drawer {
+    opacity: 0;
+  }
+  .drawer-open .drawer {
+    opacity: 1;
+  }
+
+  .drawer-butt {
+    margin-left: 0;
+    width: 100%;
+  }
+  
+  .drawer-open .drawer-butt {
+    margin-left: 0;
+    -webkit-transform: translate(250px, 0);
+    -moz-transform:    translate(250px, 0);
+    -ms-transform:     translate(250px, 0);
+    -o-transform:      translate(250px, 0);
+    transform:         translate(250px, 0);
+  }
+}
